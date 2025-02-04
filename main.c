@@ -300,13 +300,21 @@ inline static void gpio_set_mode(uint32_t gpiodev, uint16_t gpion, uint8_t mode)
 #ifdef ENABLE_GPIO_DFU_BOOT
 int force_dfu_gpio() {
 	rcc_gpio_enable(GPIO_DFU_BOOT_PORT);
-	gpio_set_input_pp(GPIO_DFU_BOOT_PORT, GPIO_DFU_BOOT_PIN);
+    gpio_set_input_pp(GPIO_DFU_BOOT_PORT, GPIO_DFU_BOOT_PIN);
+#ifdef GPIO_DFU_BOOT_PULL_UP
+    gpio_set(GPIO_DFU_BOOT_PORT, GPIO_DFU_BOOT_PIN);
+#else
 	gpio_clear(GPIO_DFU_BOOT_PORT, GPIO_DFU_BOOT_PIN);
+#endif
 	for (unsigned int i = 0; i < 512; i++)
 		__asm__("nop");
 	uint16_t val = gpio_read(GPIO_DFU_BOOT_PORT, GPIO_DFU_BOOT_PIN);
 	gpio_set_input(GPIO_DFU_BOOT_PORT, GPIO_DFU_BOOT_PIN);
-	return val != 0;
+#ifdef GPIO_DFU_BOOT_PULL_UP
+    return val == 0;
+#else
+    return val != 0;
+#endif
 }
 #else
 #define force_dfu_gpio()  (0)
