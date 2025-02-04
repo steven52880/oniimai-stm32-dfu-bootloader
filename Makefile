@@ -19,6 +19,9 @@ CONFIG += -DENABLE_WATCHDOG=20
 # GPIO Pin to force DFU mode
 CONFIG += -DENABLE_GPIO_DFU_BOOT -DGPIO_DFU_BOOT_PORT=GPIOC -DGPIO_DFU_BOOT_PIN=6 -DGPIO_DFU_BOOT_PULL_UP
 
+# GPIO Pin to show bootloader status
+CONFIG += -DENABLE_GPIO_LED -DGPIO_LED_PORT=GPIOC -DGPIO_LED_PIN=7
+
 # Configs
 # Enables DFU upload commands, this is, enables reading flash memory (only within the user app boundaries) via DFU.
 # CONFIG += -DENABLE_DFU_UPLOAD

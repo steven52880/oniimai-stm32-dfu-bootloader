@@ -518,9 +518,29 @@ int main(void) {
 	get_dev_unique_id(serial_no);
 	usb_init();
 
+#ifdef ENABLE_GPIO_LED
+    uint32_t led_cnt = 0;
+    uint8_t led_state = 0;
+    rcc_gpio_enable(GPIO_LED_PORT);
+    gpio_set_output(GPIO_LED_PORT, GPIO_LED_PIN);
+    gpio_clear(GPIO_LED_PORT, GPIO_LED_PIN);
+#endif
+
 	while (1) {
 		// Poll based approach
 		do_usb_poll();
+
+#ifdef ENABLE_GPIO_LED
+        // Flash LED
+        if (led_cnt++ > 500000) {
+            led_cnt = 0;
+            led_state = !led_state;
+            if (led_state)
+                gpio_set(GPIO_LED_PORT, GPIO_LED_PIN);
+            else
+                gpio_clear(GPIO_LED_PORT, GPIO_LED_PIN);
+        }
+#endif
 	}
 	__builtin_unreachable();
 }
