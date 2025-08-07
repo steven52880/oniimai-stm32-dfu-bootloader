@@ -1,7 +1,7 @@
 CROSS_COMPILE ?= arm-none-eabi-
 CC = $(CROSS_COMPILE)gcc
 OBJCOPY = $(CROSS_COMPILE)objcopy
-GIT_VERSION := $(shell git describe --abbrev=8 --dirty --always --tags)
+GIT_VERSION := $(shell git describe --abbrev=8 --always --tags)
 
 # Config bits
 BOOTLOADER_SIZE = 4
@@ -17,10 +17,10 @@ CONFIG ?= -DWINUSB_SUPPORT
 CONFIG += -DENABLE_WATCHDOG=20
 
 # GPIO Pin to force DFU mode
-CONFIG += -DENABLE_GPIO_DFU_BOOT -DGPIO_DFU_BOOT_PORT=GPIOC -DGPIO_DFU_BOOT_PIN=6 -DGPIO_DFU_BOOT_PULL_UP
+CONFIG += -DENABLE_GPIO_DFU_BOOT -DGPIO_DFU_BOOT_PORT=GPIOB -DGPIO_DFU_BOOT_PIN=8 -DGPIO_DFU_BOOT_PULL_UP
 
 # GPIO Pin to show bootloader status
-CONFIG += -DENABLE_GPIO_LED -DGPIO_LED_PORT=GPIOC -DGPIO_LED_PIN=7
+CONFIG += -DENABLE_GPIO_LED -DGPIO_LED_PORT=GPIOC -DGPIO_LED_PIN=12
 
 # Configs
 # Enables DFU upload commands, this is, enables reading flash memory (only within the user app boundaries) via DFU.
@@ -30,7 +30,7 @@ CONFIG += -DENABLE_GPIO_LED -DGPIO_LED_PORT=GPIOC -DGPIO_LED_PIN=7
 # Forces the user app image to have a valid checksum to boot it, on failure it will fallback to DFU mode.
 # CONFIG += -DENABLE_CHECKSUM
 # Disables JTAG at startup before jumping to user code and also ensures RDP protection is enabled before booting. It will update option bytes if that is not met and force a reset (should only happen the first time, after that RDP is enabled and can only be disabled via JTAG).
-# CONFIG += -DENABLE_PROTECTIONS
+CONFIG += -DENABLE_PROTECTIONS
 # Enables DFU mode when a reset from the NRST pin occurs.
 # CONFIG += -DENABLE_PINRST_DFU_BOOT
 
